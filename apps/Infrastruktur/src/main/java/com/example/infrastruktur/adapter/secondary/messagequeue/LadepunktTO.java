@@ -8,27 +8,27 @@ import java.time.LocalDateTime;
  */
 public class LadepunktTO {
 
-    private String ladepunktId;
-    private double neueGesamtleistungKWH;
+    private Integer ladepunktId;
+    private Double neueGesamtleistungKWH;
     private LocalDateTime timestamp;
 
-    public LadepunktTO(String ladepunktId, double neueGesamtleistungKWH) {
-		this.ladepunktId = ladepunktId;
-		this.neueGesamtleistungKWH = neueGesamtleistungKWH;
-		this.timestamp = LocalDateTime.now();
+    public LadepunktTO(Integer ladepunktId, Double neueGesamtleistungKWH) {
+        this.ladepunktId = ladepunktId;
+        this.neueGesamtleistungKWH = neueGesamtleistungKWH;
+        this.timestamp = LocalDateTime.now();
     }
 
-    public LadepunktTO(String ladepunktId, double neueGesamtleistungKWH, LocalDateTime timestamp) {
+    public LadepunktTO(Integer ladepunktId, Double neueGesamtleistungKWH, LocalDateTime timestamp) {
         this.ladepunktId = ladepunktId;
         this.neueGesamtleistungKWH = neueGesamtleistungKWH;
         this.timestamp = timestamp;
     }
 
-    public String getLadepunktId() {
+    public Integer getLadepunktId() {
         return ladepunktId;
     }
 
-    public double getNeueGesamtleistungKWH() {
+    public Double getNeueGesamtleistungKWH() {
         return neueGesamtleistungKWH;
     }
 
@@ -36,11 +36,11 @@ public class LadepunktTO {
         return timestamp;
     }
 
-    public void setLadepunktId(String ladepunktId) {
+    public void setLadepunktId(Integer ladepunktId) {
         this.ladepunktId = ladepunktId;
     }
 
-    public void setNeueGesamtleistungKWH(double neueGesamtleistungKWH) {
+    public void setNeueGesamtleistungKWH(Double neueGesamtleistungKWH) {
         this.neueGesamtleistungKWH = neueGesamtleistungKWH;
     }
 

@@ -1,27 +1,18 @@
-package com.example.infrastruktur.adapter.secondary.persistence;
+package com.example.infrastruktur.application.dto;
 
-import org.springframework.data.annotation.Id;
-
-import com.example.infrastruktur.application.domain.Ladepunkt;
-import com.example.infrastruktur.application.domain.LadepunktId;
-
-public class LadepunktEntity {
-
-    @Id
+public class LadepunktResponse {
     private Integer ladepunktId;
-
     private String standort;
     private Double ladeleistungKW;
     private String anschlussart;
     private String verfuegbarkeit;
     private Double gesamtleistungKWH;
 
-    public LadepunktEntity() {
-        // Leerer Konstruktor für Reflection (Spring Data)
+    public LadepunktResponse() {
     }
 
-    public LadepunktEntity(Integer ladepunktId, String standort, Double ladeleistungKW,
-            String anschlussart, String verfuegbarkeit, Double gesamtleistungKWH) {
+    public LadepunktResponse(Integer ladepunktId, String standort, Double ladeleistungKW, String anschlussart,
+            String verfuegbarkeit, Double gesamtleistungKWH) {
         this.ladepunktId = ladepunktId;
         this.standort = standort;
         this.ladeleistungKW = ladeleistungKW;
@@ -30,33 +21,6 @@ public class LadepunktEntity {
         this.gesamtleistungKWH = gesamtleistungKWH;
     }
 
-    /**
-     * Convenience-Konstruktor, um direkt aus der Domain-Entität eine Entity zu
-     * erstellen.
-     */
-    public LadepunktEntity(Ladepunkt domain) {
-        this.ladepunktId = domain.getLadepunktId().getId();
-        this.standort = domain.getStandort();
-        this.ladeleistungKW = domain.getLadeleistungKW();
-        this.anschlussart = domain.getAnschlussart();
-        this.verfuegbarkeit = domain.getVerfuegbarkeit();
-        this.gesamtleistungKWH = domain.getGesamtleistungKWH();
-    }
-
-    /**
-     * Wandelt diese Persistence-Entity in die Domain-Entität `Ladepunkt` um.
-     */
-    public Ladepunkt toDomain() {
-        return new Ladepunkt(
-                new LadepunktId(this.ladepunktId),
-                this.standort,
-                this.ladeleistungKW,
-                this.anschlussart,
-                this.verfuegbarkeit,
-                this.gesamtleistungKWH);
-    }
-
-    // Getter/Setter
     public Integer getLadepunktId() {
         return ladepunktId;
     }

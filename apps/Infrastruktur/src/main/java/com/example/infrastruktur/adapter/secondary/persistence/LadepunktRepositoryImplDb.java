@@ -10,7 +10,8 @@ import com.example.infrastruktur.application.port.secondary.LadepunktRepository;
 
 /**
  * Implementierung des LadepunktRepository für die DB.
- * Greift intern auf ein JdbcLadepunktEntityRepository (oder Spring Data Repo) zu.
+ * Greift intern auf ein JdbcLadepunktEntityRepository (oder Spring Data Repo)
+ * zu.
  */
 public class LadepunktRepositoryImplDb implements LadepunktRepository {
 
@@ -31,6 +32,7 @@ public class LadepunktRepositoryImplDb implements LadepunktRepository {
     public void save(Ladepunkt ladepunkt) {
         LadepunktEntity ladepunktEntity = new LadepunktEntity(ladepunkt);
         jdbcLadepunktEntityRepository.save(ladepunktEntity);
+        ladepunkt.setLadepunktId(new LadepunktId(ladepunktEntity.getLadepunktId())); // set auto-generated ID
     }
 
     @Override
@@ -39,7 +41,7 @@ public class LadepunktRepositoryImplDb implements LadepunktRepository {
     }
 
     @Override
-	public List<Ladepunkt> findAll() {
+    public List<Ladepunkt> findAll() {
         return ((List<LadepunktEntity>) jdbcLadepunktEntityRepository.findAll())
                 .stream()
                 .map(LadepunktEntity::toDomain)

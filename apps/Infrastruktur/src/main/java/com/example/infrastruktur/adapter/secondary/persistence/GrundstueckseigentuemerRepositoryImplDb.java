@@ -26,6 +26,7 @@ public class GrundstueckseigentuemerRepositoryImplDb implements Grundstueckseige
     public void save(Grundstueckseigentuemer eigentuemer) {
         GrundstueckseigentuemerEntity entity = new GrundstueckseigentuemerEntity(eigentuemer);
         jdbcRepo.save(entity);
+        eigentuemer.setEigentuemerId(new GrundstueckseigentuemerId(entity.getEigentuemerId())); // set auto-generated ID
     }
 
     @Override

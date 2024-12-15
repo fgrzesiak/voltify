@@ -1,24 +1,15 @@
-package com.example.infrastruktur.application.domain;
+package com.example.infrastruktur.application.dto;
 
-/**
- * Entität (Aggregate Root), die einen Ladepunkt repräsentiert
- */
-public class Ladepunkt {
+public class LadepunktRequest {
+    private String standort;
+    private Double ladeleistungKW;
+    private String anschlussart;
+    private String verfuegbarkeit;
+    private Double gesamtleistungKWH;
 
-    private LadepunktId ladepunktId;
-    private String standort; // z. B. "Musterstraße 1, 12345 Stadt"
-    private Double ladeleistungKW; // z. B. 22.0
-    private String anschlussart; // z. B. "Typ 2", "CCS"
-    private String verfuegbarkeit; // z. B. "verfügbar", "in Wartung"
-    private Double gesamtleistungKWH; // Summe aller geladenen kWh
+    public LadepunktRequest() {}
 
-    public Ladepunkt(LadepunktId ladepunktId,
-            String standort,
-            Double ladeleistungKW,
-            String anschlussart,
-            String verfuegbarkeit,
-            Double gesamtleistungKWH) {
-        this.ladepunktId = ladepunktId;
+    public LadepunktRequest(String standort, Double ladeleistungKW, String anschlussart, String verfuegbarkeit, Double gesamtleistungKWH) {
         this.standort = standort;
         this.ladeleistungKW = ladeleistungKW;
         this.anschlussart = anschlussart;
@@ -26,24 +17,9 @@ public class Ladepunkt {
         this.gesamtleistungKWH = gesamtleistungKWH;
     }
 
-    // Fachlogik, z. B. Wartung starten
-    public void setzeInWartung() {
-        this.verfuegbarkeit = "in Wartung";
-    }
-
-    // Getter/Setter
-    public LadepunktId getLadepunktId() {
-        return ladepunktId;
-    }
-
-    public void setLadepunktId(LadepunktId ladepunktId) {
-        this.ladepunktId = ladepunktId;
-    }
-
     public String getStandort() {
         return standort;
     }
-
     public void setStandort(String standort) {
         this.standort = standort;
     }
@@ -51,7 +27,6 @@ public class Ladepunkt {
     public Double getLadeleistungKW() {
         return ladeleistungKW;
     }
-
     public void setLadeleistungKW(Double ladeleistungKW) {
         this.ladeleistungKW = ladeleistungKW;
     }
@@ -59,7 +34,6 @@ public class Ladepunkt {
     public String getAnschlussart() {
         return anschlussart;
     }
-
     public void setAnschlussart(String anschlussart) {
         this.anschlussart = anschlussart;
     }
@@ -67,7 +41,6 @@ public class Ladepunkt {
     public String getVerfuegbarkeit() {
         return verfuegbarkeit;
     }
-
     public void setVerfuegbarkeit(String verfuegbarkeit) {
         this.verfuegbarkeit = verfuegbarkeit;
     }
@@ -75,7 +48,6 @@ public class Ladepunkt {
     public Double getGesamtleistungKWH() {
         return gesamtleistungKWH;
     }
-
     public void setGesamtleistungKWH(Double gesamtleistungKWH) {
         this.gesamtleistungKWH = gesamtleistungKWH;
     }

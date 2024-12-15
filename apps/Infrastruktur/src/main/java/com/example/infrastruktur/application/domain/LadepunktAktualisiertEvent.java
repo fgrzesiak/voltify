@@ -11,12 +11,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class LadepunktAktualisiertEvent extends DomainEvent {
 
     public LadepunktAktualisiertEvent(Ladepunkt ladepunkt) {
-        // Erstelle ein Transferobjekt (TO), das die relevanten Felder für die Message Queue enthält.
+        // Erstelle ein Transferobjekt (TO), das die relevanten Felder für die Message
+        // Queue enthält.
         LadepunktTO ladepunktTO = new LadepunktTO(
-            ladepunkt.getLadepunktId().getId(),
-            ladepunkt.getGesamtleistungKWH()
-            // ggf. weitere Felder anfügen (z. B. standort, timestamp, usw.)
-        );
+                ladepunkt.getLadepunktId().getId(),
+                ladepunkt.getGesamtleistungKWH());
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();

@@ -1,31 +1,32 @@
 package com.example.infrastruktur.application.domain;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Value Object für die eindeutige ID eines Ladepunkts
  */
 public class LadepunktId {
 
-    private final String id;
+    private Integer id;
 
     public LadepunktId() {
-        this.id = UUID.randomUUID().toString();
+        this.id = null;
     }
 
-    public LadepunktId(String id) {
+    public LadepunktId(Integer id) {
         this.id = id;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof LadepunktId)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof LadepunktId))
+            return false;
         LadepunktId ladepunktId = (LadepunktId) o;
         return Objects.equals(id, ladepunktId.id);
     }

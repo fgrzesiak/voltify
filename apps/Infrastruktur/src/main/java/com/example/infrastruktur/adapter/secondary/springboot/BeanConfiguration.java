@@ -13,8 +13,8 @@ import com.example.infrastruktur.adapter.secondary.persistence.Grundstueckseigen
 import com.example.infrastruktur.adapter.secondary.persistence.JdbcGrundstueckseigentuemerEntityRepository;
 import com.example.infrastruktur.adapter.secondary.persistence.JdbcLadepunktEntityRepository;
 import com.example.infrastruktur.application.domain.LadepunktDomainService;
-import com.example.infrastruktur.application.port.primary.LadeinfrastrukturVerwaltungsAppService;
-import com.example.infrastruktur.application.LadeinfrastrukturVerwaltungsAppServiceImpl;
+import com.example.infrastruktur.application.port.primary.InfrastrukturAppService;
+import com.example.infrastruktur.application.InfrastrukturAppServiceImpl;
 import com.example.infrastruktur.application.port.secondary.LadepunktRepository;
 import com.example.infrastruktur.application.port.secondary.EventPublisher;
 import com.example.infrastruktur.application.port.secondary.GrundstueckseigentuemerRepository;
@@ -26,12 +26,12 @@ public class BeanConfiguration {
      * Controller-Bean
      */
     @Bean
-    LadepunktController ladepunktController(LadeinfrastrukturVerwaltungsAppService ladeinfraService) {
+    LadepunktController ladepunktController(InfrastrukturAppService ladeinfraService) {
         return new LadepunktController(ladeinfraService);
     }
 
     @Bean
-    GrundstueckseigentuemerController grundstueckseigentuemerController(LadeinfrastrukturVerwaltungsAppService ladeinfraService) {
+    GrundstueckseigentuemerController grundstueckseigentuemerController(InfrastrukturAppService ladeinfraService) {
         return new GrundstueckseigentuemerController(ladeinfraService);
     }
 
@@ -39,15 +39,16 @@ public class BeanConfiguration {
      * Application-Service-Bean
      */
     @Bean
-    LadeinfrastrukturVerwaltungsAppService ladeinfrastrukturVerwaltungsAppService(
+    InfrastrukturAppService ladeinfrastrukturVerwaltungsAppService(
             LadepunktRepository ladepunktRepository,
             GrundstueckseigentuemerRepository eigentuemerRepository,
             LadepunktDomainService ladepunktDomainService) {
-        return new LadeinfrastrukturVerwaltungsAppServiceImpl(ladepunktRepository, eigentuemerRepository, ladepunktDomainService);
+        return new InfrastrukturAppServiceImpl(ladepunktRepository, eigentuemerRepository, ladepunktDomainService);
     }
 
     /**
-     * Domain-Service-Bean (analog zum ArtikelEinlagernDomainService – jetzt für Ladevorgänge oder Wartung o. ä.)
+     * Domain-Service-Bean (analog zum ArtikelEinlagernDomainService – jetzt für
+     * Ladevorgänge oder Wartung o. ä.)
      */
     @Bean
     LadepunktDomainService ladepunktDomainService(EventPublisher eventPublisher) {
@@ -56,28 +57,30 @@ public class BeanConfiguration {
 
     /**
      * Repository-Bean (ersetzt ArtikelRepository durch LadepunktRepository).
-     * Implementierung = LadepunktRepositoryImplDb, das wiederum JdbcLadepunktEntityRepository nutzt.
+     * Implementierung = LadepunktRepositoryImplDb, das wiederum
+     * JdbcLadepunktEntityRepository nutzt.
      */
     @Bean
     LadepunktRepository ladepunktRepository(JdbcLadepunktEntityRepository jdbcLadepunktEntityRepository) {
         return new LadepunktRepositoryImplDb(jdbcLadepunktEntityRepository);
     }
 
-       /**
+    /**
      * Grundstückseigentümer-Repository-Bean
      */
     @Bean
-    GrundstueckseigentuemerRepository grundstueckseigentuemerRepository(JdbcGrundstueckseigentuemerEntityRepository jdbcGrundstueckseigentuemerEntityRepository) {
+    GrundstueckseigentuemerRepository grundstueckseigentuemerRepository(
+            JdbcGrundstueckseigentuemerEntityRepository jdbcGrundstueckseigentuemerEntityRepository) {
         return new GrundstueckseigentuemerRepositoryImplDb(jdbcGrundstueckseigentuemerEntityRepository);
     }
 
     /**
-     * EventPublisher-Bean (RabbitMQ / AMQP), analog zum EventPublisherImpl im Artikel-Beispiel.
+     * EventPublisher-Bean (RabbitMQ / AMQP), analog zum EventPublisherImpl im
+     * Artikel-Beispiel.
      */
     @Bean
     EventPublisher eventPublisher(RabbitTemplate rabbitTemplate, AmqpAdmin amqpAdmin) {
         return new EventPublisherImpl(rabbitTemplate, amqpAdmin);
     }
 
- 
 }

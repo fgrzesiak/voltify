@@ -1,8 +1,8 @@
 package com.example.infrastruktur.adapter.primary.REST;
 
-import com.example.infrastruktur.application.domain.Grundstueckseigentuemer;
-import com.example.infrastruktur.application.domain.GrundstueckseigentuemerId;
-import com.example.infrastruktur.application.port.primary.LadeinfrastrukturVerwaltungsAppService;
+import com.example.infrastruktur.application.dto.EigentuemerRequest;
+import com.example.infrastruktur.application.dto.EigentuemerResponse;
+import com.example.infrastruktur.application.port.primary.InfrastrukturAppService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,29 +13,18 @@ import java.util.List;
 @RequestMapping("/eigentuemer")
 public class GrundstueckseigentuemerController {
 
-    private final LadeinfrastrukturVerwaltungsAppService service;
+    private final InfrastrukturAppService service;
 
-    public GrundstueckseigentuemerController(LadeinfrastrukturVerwaltungsAppService service) {
+    public GrundstueckseigentuemerController(InfrastrukturAppService service) {
         this.service = service;
-    }
-
-    /**
-     * POST /eigentuemer
-     * Legt einen neuen Eigentümer an
-     */
-    @PostMapping
-    public ResponseEntity<String> eigentuemerAnlegen(@RequestBody Grundstueckseigentuemer eigentuemerDto) {
-        GrundstueckseigentuemerId newId = service.eigentuemerAnlegen(eigentuemerDto);
-        return new ResponseEntity<>("Neuer Eigentümer mit ID=" + newId.getId() + " angelegt.", HttpStatus.CREATED);
     }
 
     /**
      * GET /eigentuemer/{id}
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Grundstueckseigentuemer> eigentuemerFinden(@PathVariable("id") String id) {
-        GrundstueckseigentuemerId eigentuemerId = new GrundstueckseigentuemerId(id);
-        Grundstueckseigentuemer eigentuemer = service.eigentuemerFinden(eigentuemerId);
+    public ResponseEntity<EigentuemerResponse> eigentuemerFinden(@PathVariable("id") Integer id) {
+        EigentuemerResponse eigentuemer = service.eigentuemerFinden(id);
         if (eigentuemer == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -48,10 +37,9 @@ public class GrundstueckseigentuemerController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<String> eigentuemerAktualisieren(
-            @PathVariable("id") String id,
-            @RequestBody Grundstueckseigentuemer neueDaten) {
-        GrundstueckseigentuemerId eigentuemerId = new GrundstueckseigentuemerId(id);
-        boolean success = service.eigentuemerAktualisieren(eigentuemerId, neueDaten);
+            @PathVariable("id") Integer id,
+            @RequestBody EigentuemerRequest eigentuemerDto) {
+        boolean success = service.eigentuemerAktualisieren(id, eigentuemerDto);
         if (!success) {
             return new ResponseEntity<>("Eigentümer nicht gefunden", HttpStatus.NOT_FOUND);
         }
@@ -59,13 +47,25 @@ public class GrundstueckseigentuemerController {
     }
 
     /**
+     * POST /eigentuemer
+     * Legt einen neuen Eigentümer an
+     */
+    @PostMapping
+    public ResponseEntity<String> eigentuemerAnlegen(@RequestBody EigentuemerRequest eigentuemerDto) {
+        Integer newId = service.eigentuemerAnlegen(eigentuemerDto); // gibt String-ID zurück
+        if (newId != null) {
+            return new ResponseEntity<>("Neuer Eigentümer mit ID=" + newId + " angelegt.", HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>("Fehler beim Anlegen des Eigentümers", HttpStatus.BAD_REQUEST);
+    }
+
+    /**
      * DELETE /eigentuemer/{id}
      * Löscht Eigentümer
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eigentuemerLoeschen(@PathVariable("id") String id) {
-        GrundstueckseigentuemerId eigentuemerId = new GrundstueckseigentuemerId(id);
-        boolean deleted = service.eigentuemerLoeschen(eigentuemerId);
+    public ResponseEntity<String> eigentuemerLoeschen(@PathVariable("id") Integer id) {
+        boolean deleted = service.eigentuemerLoeschen(id);
         if (!deleted) {
             return new ResponseEntity<>("Eigentümer nicht gefunden", HttpStatus.NOT_FOUND);
         }
@@ -77,7 +77,7 @@ public class GrundstueckseigentuemerController {
      * Liefert alle Eigentümer
      */
     @GetMapping
-    public List<Grundstueckseigentuemer> alleEigentuemer() {
+    public List<EigentuemerResponse> alleEigentuemer() {
         return service.alleEigentuemerAnzeigen();
     }
 }

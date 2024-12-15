@@ -1,31 +1,32 @@
 package com.example.infrastruktur.application.domain;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Value Object für die Eigentümer-ID
  */
 public class GrundstueckseigentuemerId {
 
-    private final String id;
+    private Integer id;
 
     public GrundstueckseigentuemerId() {
-        this.id = UUID.randomUUID().toString();
+        this.id = null;
     }
 
-    public GrundstueckseigentuemerId(String id) {
+    public GrundstueckseigentuemerId(Integer id) {
         this.id = id;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof GrundstueckseigentuemerId)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof GrundstueckseigentuemerId))
+            return false;
         GrundstueckseigentuemerId other = (GrundstueckseigentuemerId) o;
         return Objects.equals(id, other.id);
     }
