@@ -1,10 +1,11 @@
 package com.example.infrastruktur.adapter.primary.REST;
 
+import com.example.infrastruktur.application.domain.Grundstueckseigentuemer;
+import com.example.infrastruktur.application.domain.GrundstueckseigentuemerId;
+import com.example.infrastruktur.application.port.primary.LadeinfrastrukturVerwaltungsAppService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.infrastruktur.application.port.primary.LadeinfrastrukturVerwaltungsAppService;
-import com.example.infrastruktur.domain.model.EigentuemerDto;
 
 import java.util.List;
 
@@ -12,31 +13,29 @@ import java.util.List;
 @RequestMapping("/eigentuemer")
 public class GrundstueckseigentuemerController {
 
-    private final LadeinfrastrukturVerwaltungsAppService ladeinfraService;
+    private final LadeinfrastrukturVerwaltungsAppService service;
 
-    public GrundstueckseigentuemerController(LadeinfrastrukturVerwaltungsAppService ladeinfraService) {
-        this.ladeinfraService = ladeinfraService;
+    public GrundstueckseigentuemerController(LadeinfrastrukturVerwaltungsAppService service) {
+        this.service = service;
     }
 
     /**
-     * GET /eigentuemer
-     * 
-     * Liefert alle Grundstückseigentümer als Liste.
+     * POST /eigentuemer
+     * Legt einen neuen Eigentümer an
      */
-    @GetMapping
-    public ResponseEntity<List<EigentuemerDto>> alleEigentuemerAnzeigen() {
-        List<EigentuemerDto> eigentuemer = ladeinfraService.alleEigentuemerFinden();
-        return new ResponseEntity<>(eigentuemer, HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<String> eigentuemerAnlegen(@RequestBody Grundstueckseigentuemer eigentuemerDto) {
+        GrundstueckseigentuemerId newId = service.eigentuemerAnlegen(eigentuemerDto);
+        return new ResponseEntity<>("Neuer Eigentümer mit ID=" + newId.getId() + " angelegt.", HttpStatus.CREATED);
     }
 
     /**
      * GET /eigentuemer/{id}
-     * 
-     * Liefert Daten zu einem spezifischen Grundstückseigentümer.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<EigentuemerDto> eigentuemerAnzeigen(@PathVariable("id") int eigentuemerId) {
-        EigentuemerDto eigentuemer = ladeinfraService.eigentuemerFinden(eigentuemerId);
+    public ResponseEntity<Grundstueckseigentuemer> eigentuemerFinden(@PathVariable("id") String id) {
+        GrundstueckseigentuemerId eigentuemerId = new GrundstueckseigentuemerId(id);
+        Grundstueckseigentuemer eigentuemer = service.eigentuemerFinden(eigentuemerId);
         if (eigentuemer == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -44,46 +43,41 @@ public class GrundstueckseigentuemerController {
     }
 
     /**
-     * POST /eigentuemer
-     * 
-     * Legt einen neuen Grundstückseigentümer an.
-     */
-    @PostMapping
-    public ResponseEntity<String> eigentuemerAnlegen(@RequestBody EigentuemerDto eigentuemerDto) {
-        int neuId = ladeinfraService.eigentuemerAnlegen(eigentuemerDto);
-        if (neuId > 0) {
-            return new ResponseEntity<>("Neuer Grundstückseigentümer mit ID=" + neuId + " angelegt.", HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("Fehler beim Anlegen des Eigentümers", HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    /**
      * PUT /eigentuemer/{id}
-     * 
-     * Aktualisiert die Daten eines Grundstückseigentümers.
+     * Aktualisiert Daten eines Eigentümers
      */
     @PutMapping("/{id}")
-    public ResponseEntity<String> eigentuemerAktualisieren(@PathVariable("id") int eigentuemerId,
-                                                          @RequestBody EigentuemerDto eigentuemerDto) {
-        boolean aktualisiert = ladeinfraService.eigentuemerAktualisieren(eigentuemerId, eigentuemerDto);
-        if (!aktualisiert) {
-            return new ResponseEntity<>("Eigentümer nicht gefunden oder Update fehlgeschlagen", HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> eigentuemerAktualisieren(
+            @PathVariable("id") String id,
+            @RequestBody Grundstueckseigentuemer neueDaten) {
+        GrundstueckseigentuemerId eigentuemerId = new GrundstueckseigentuemerId(id);
+        boolean success = service.eigentuemerAktualisieren(eigentuemerId, neueDaten);
+        if (!success) {
+            return new ResponseEntity<>("Eigentümer nicht gefunden", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>("Eigentümer aktualisiert", HttpStatus.OK);
     }
 
     /**
      * DELETE /eigentuemer/{id}
-     * 
-     * Löscht einen bestehenden Eigentümer.
+     * Löscht Eigentümer
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eigentuemerLoeschen(@PathVariable("id") int eigentuemerId) {
-        boolean geloescht = ladeinfraService.eigentuemerLoeschen(eigentuemerId);
-        if (!geloescht) {
-            return new ResponseEntity<>("Eigentümer nicht gefunden oder Löschen fehlgeschlagen", HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> eigentuemerLoeschen(@PathVariable("id") String id) {
+        GrundstueckseigentuemerId eigentuemerId = new GrundstueckseigentuemerId(id);
+        boolean deleted = service.eigentuemerLoeschen(eigentuemerId);
+        if (!deleted) {
+            return new ResponseEntity<>("Eigentümer nicht gefunden", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>("Eigentümer gelöscht", HttpStatus.OK);
+    }
+
+    /**
+     * GET /eigentuemer
+     * Liefert alle Eigentümer
+     */
+    @GetMapping
+    public List<Grundstueckseigentuemer> alleEigentuemer() {
+        return service.alleEigentuemerAnzeigen();
     }
 }

@@ -4,11 +4,9 @@ import com.example.infrastruktur.application.domain.*;
 import com.example.infrastruktur.application.port.secondary.LadepunktRepository;
 import com.example.infrastruktur.application.port.secondary.GrundstueckseigentuemerRepository;
 import com.example.infrastruktur.application.port.primary.LadeinfrastrukturVerwaltungsAppService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class LadeinfrastrukturVerwaltungsAppServiceImpl implements LadeinfrastrukturVerwaltungsAppService {
 
     private final LadepunktRepository ladepunktRepository;

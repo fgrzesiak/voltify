@@ -5,9 +5,12 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.infrastruktur.adapter.primary.REST.GrundstueckseigentuemerController;
 import com.example.infrastruktur.adapter.primary.REST.LadepunktController;
 import com.example.infrastruktur.adapter.secondary.messagequeue.EventPublisherImpl;
 import com.example.infrastruktur.adapter.secondary.persistence.LadepunktRepositoryImplDb;
+import com.example.infrastruktur.adapter.secondary.persistence.GrundstueckseigentuemerRepositoryImplDb;
+import com.example.infrastruktur.adapter.secondary.persistence.JdbcGrundstueckseigentuemerEntityRepository;
 import com.example.infrastruktur.adapter.secondary.persistence.JdbcLadepunktEntityRepository;
 import com.example.infrastruktur.application.domain.LadepunktDomainService;
 import com.example.infrastruktur.application.port.primary.LadeinfrastrukturVerwaltungsAppService;
@@ -20,20 +23,25 @@ import com.example.infrastruktur.application.port.secondary.Grundstueckseigentue
 public class BeanConfiguration {
 
     /**
-     * Controller-Bean (analog zu LagerController, aber jetzt: LadepunktController)
+     * Controller-Bean
      */
     @Bean
     LadepunktController ladepunktController(LadeinfrastrukturVerwaltungsAppService ladeinfraService) {
         return new LadepunktController(ladeinfraService);
     }
 
+    @Bean
+    GrundstueckseigentuemerController grundstueckseigentuemerController(LadeinfrastrukturVerwaltungsAppService ladeinfraService) {
+        return new GrundstueckseigentuemerController(ladeinfraService);
+    }
+
     /**
-     * Application-Service-Bean (ersetzt LagerVerwaltenAppService durch LadeinfrastrukturVerwaltungsAppService)
+     * Application-Service-Bean
      */
     @Bean
     LadeinfrastrukturVerwaltungsAppService ladeinfrastrukturVerwaltungsAppService(
             LadepunktRepository ladepunktRepository,
-			GrundstueckseigentuemerRepository eigentuemerRepository,
+            GrundstueckseigentuemerRepository eigentuemerRepository,
             LadepunktDomainService ladepunktDomainService) {
         return new LadeinfrastrukturVerwaltungsAppServiceImpl(ladepunktRepository, eigentuemerRepository, ladepunktDomainService);
     }
@@ -55,6 +63,14 @@ public class BeanConfiguration {
         return new LadepunktRepositoryImplDb(jdbcLadepunktEntityRepository);
     }
 
+       /**
+     * Grundstückseigentümer-Repository-Bean
+     */
+    @Bean
+    GrundstueckseigentuemerRepository grundstueckseigentuemerRepository(JdbcGrundstueckseigentuemerEntityRepository jdbcGrundstueckseigentuemerEntityRepository) {
+        return new GrundstueckseigentuemerRepositoryImplDb(jdbcGrundstueckseigentuemerEntityRepository);
+    }
+
     /**
      * EventPublisher-Bean (RabbitMQ / AMQP), analog zum EventPublisherImpl im Artikel-Beispiel.
      */
@@ -63,4 +79,5 @@ public class BeanConfiguration {
         return new EventPublisherImpl(rabbitTemplate, amqpAdmin);
     }
 
+ 
 }
