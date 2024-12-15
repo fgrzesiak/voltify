@@ -2,19 +2,22 @@ package com.example.infrastruktur.application.dto;
 
 public class LadepunktResponse {
     private Integer ladepunktId;
-    private String standort;
+    private Integer eigentuemerId;
     private Double ladeleistungKW;
     private String anschlussart;
     private String verfuegbarkeit;
     private Double gesamtleistungKWH;
+    private AdresseDto adresse;
 
     public LadepunktResponse() {
     }
 
-    public LadepunktResponse(Integer ladepunktId, String standort, Double ladeleistungKW, String anschlussart,
+    public LadepunktResponse(Integer ladepunktId, Integer eigentuemerId, AdresseDto adresse, Double ladeleistungKW,
+            String anschlussart,
             String verfuegbarkeit, Double gesamtleistungKWH) {
         this.ladepunktId = ladepunktId;
-        this.standort = standort;
+        this.eigentuemerId = eigentuemerId;
+        this.adresse = adresse;
         this.ladeleistungKW = ladeleistungKW;
         this.anschlussart = anschlussart;
         this.verfuegbarkeit = verfuegbarkeit;
@@ -29,12 +32,20 @@ public class LadepunktResponse {
         this.ladepunktId = ladepunktId;
     }
 
-    public String getStandort() {
-        return standort;
+    public Integer getEigentuemerId() {
+        return eigentuemerId;
     }
 
-    public void setStandort(String standort) {
-        this.standort = standort;
+    public void setEigentuemerId(Integer eigentuemerId) {
+        this.eigentuemerId = eigentuemerId;
+    }
+
+    public AdresseDto getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(AdresseDto adresse) {
+        this.adresse = adresse;
     }
 
     public Double getLadeleistungKW() {

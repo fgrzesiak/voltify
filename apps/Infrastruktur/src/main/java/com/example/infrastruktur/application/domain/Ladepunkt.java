@@ -6,20 +6,24 @@ package com.example.infrastruktur.application.domain;
 public class Ladepunkt {
 
     private LadepunktId ladepunktId;
-    private String standort; // z. B. "Musterstraße 1, 12345 Stadt"
+    private EigentuemerId eigentuemerId;
+    private Adresse adresse; // z. B. "Musterstraße 1, 12345 Stadt"
     private Double ladeleistungKW; // z. B. 22.0
     private String anschlussart; // z. B. "Typ 2", "CCS"
     private String verfuegbarkeit; // z. B. "verfügbar", "in Wartung"
     private Double gesamtleistungKWH; // Summe aller geladenen kWh
 
-    public Ladepunkt(LadepunktId ladepunktId,
-            String standort,
+    public Ladepunkt(
+            LadepunktId ladepunktId,
+            EigentuemerId eigentuemerId,
+            Adresse adresse,
             Double ladeleistungKW,
             String anschlussart,
             String verfuegbarkeit,
             Double gesamtleistungKWH) {
         this.ladepunktId = ladepunktId;
-        this.standort = standort;
+        this.eigentuemerId = eigentuemerId;
+        this.adresse = adresse;
         this.ladeleistungKW = ladeleistungKW;
         this.anschlussart = anschlussart;
         this.verfuegbarkeit = verfuegbarkeit;
@@ -40,12 +44,20 @@ public class Ladepunkt {
         this.ladepunktId = ladepunktId;
     }
 
-    public String getStandort() {
-        return standort;
+    public EigentuemerId getEigentuemerId() {
+        return eigentuemerId;
     }
 
-    public void setStandort(String standort) {
-        this.standort = standort;
+    public void setEigentuemerId(EigentuemerId eigentuemerId) {
+        this.eigentuemerId = eigentuemerId;
+    }
+
+    public Adresse getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(Adresse adresse) {
+        this.adresse = adresse;
     }
 
     public Double getLadeleistungKW() {

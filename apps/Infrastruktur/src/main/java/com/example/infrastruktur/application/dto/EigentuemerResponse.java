@@ -10,18 +10,18 @@ public class EigentuemerResponse {
 
     private Integer eigentuemerId;
     private String name;
-    private String firmenadresse;
+    private AdresseDto adresse;
     private List<AnsprechpartnerDto> ansprechpartner;
 
     public EigentuemerResponse() {
         this.ansprechpartner = new ArrayList<>();
     }
 
-    public EigentuemerResponse(Integer eigentuemerId, String name, String firmenadresse,
+    public EigentuemerResponse(Integer eigentuemerId, String name, AdresseDto adresse,
             List<AnsprechpartnerDto> ansprechpartner) {
         this.eigentuemerId = eigentuemerId;
         this.name = name;
-        this.firmenadresse = firmenadresse;
+        this.adresse = adresse;
         this.ansprechpartner = ansprechpartner;
     }
 
@@ -41,12 +41,12 @@ public class EigentuemerResponse {
         this.name = name;
     }
 
-    public String getFirmenadresse() {
-        return firmenadresse;
+    public AdresseDto getAdresse() {
+        return adresse;
     }
 
-    public void setFirmenadresse(String firmenadresse) {
-        this.firmenadresse = firmenadresse;
+    public void setAdresse(AdresseDto adresse) {
+        this.adresse = adresse;
     }
 
     public List<AnsprechpartnerDto> getAnsprechpartner() {

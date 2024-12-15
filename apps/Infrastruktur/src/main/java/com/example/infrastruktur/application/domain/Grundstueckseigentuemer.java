@@ -10,15 +10,15 @@ public class Grundstueckseigentuemer {
 
     private GrundstueckseigentuemerId eigentuemerId;
     private String name;
-    private String firmenadresse;
     private List<Ansprechpartner> ansprechpartner;
+    private Adresse adresse;
 
     public Grundstueckseigentuemer(GrundstueckseigentuemerId eigentuemerId,
             String name,
-            String firmenadresse) {
+            Adresse adresse) {
         this.eigentuemerId = eigentuemerId;
         this.name = name;
-        this.firmenadresse = firmenadresse;
+        this.adresse = adresse;
         this.ansprechpartner = new ArrayList<>();
     }
 
@@ -43,12 +43,12 @@ public class Grundstueckseigentuemer {
         this.name = name;
     }
 
-    public String getFirmenadresse() {
-        return firmenadresse;
+    public Adresse getAdresse() {
+        return adresse;
     }
 
-    public void setFirmenadresse(String firmenadresse) {
-        this.firmenadresse = firmenadresse;
+    public void setAdresse(Adresse adresse) {
+        this.adresse = adresse;
     }
 
     public List<Ansprechpartner> getAnsprechpartner() {

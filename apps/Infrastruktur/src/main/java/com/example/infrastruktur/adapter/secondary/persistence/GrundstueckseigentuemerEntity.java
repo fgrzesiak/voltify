@@ -1,6 +1,9 @@
 package com.example.infrastruktur.adapter.secondary.persistence;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Embedded;
+
+import com.example.infrastruktur.application.domain.Adresse;
 import com.example.infrastruktur.application.domain.Grundstueckseigentuemer;
 import com.example.infrastruktur.application.domain.GrundstueckseigentuemerId;
 
@@ -8,9 +11,9 @@ public class GrundstueckseigentuemerEntity {
 
     @Id
     private Integer eigentuemerId;
-
     private String name;
-    private String firmenadresse;
+    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
+    private AdresseEntity adresse;
 
     // Bei Spring Data JDBC kann man ggf. eine separate Tabelle für Ansprechpartner
     // abbilden.
@@ -25,10 +28,10 @@ public class GrundstueckseigentuemerEntity {
     public GrundstueckseigentuemerEntity() {
     }
 
-    public GrundstueckseigentuemerEntity(Integer eigentuemerId, String name, String firmenadresse) {
+    public GrundstueckseigentuemerEntity(Integer eigentuemerId, String name, Adresse adresse) {
         this.eigentuemerId = eigentuemerId;
         this.name = name;
-        this.firmenadresse = firmenadresse;
+        this.adresse = new AdresseEntity(adresse);
     }
 
     /**
@@ -37,7 +40,7 @@ public class GrundstueckseigentuemerEntity {
     public GrundstueckseigentuemerEntity(Grundstueckseigentuemer domain) {
         this.eigentuemerId = domain.getEigentuemerId().getId();
         this.name = domain.getName();
-        this.firmenadresse = domain.getFirmenadresse();
+        this.adresse = new AdresseEntity(domain.getAdresse());
         // Ansprechpartner-Liste müsste ggf. auch noch persistiert werden (eigenes
         // Mapping).
     }
@@ -49,7 +52,7 @@ public class GrundstueckseigentuemerEntity {
         Grundstueckseigentuemer domainObj = new Grundstueckseigentuemer(
                 new GrundstueckseigentuemerId(this.eigentuemerId),
                 this.name,
-                this.firmenadresse);
+                this.adresse.toDomain());
         // Falls Ansprechpartner existieren (hier nicht abgebildet), müssten wir
         // domainObj.addAnsprechpartner(...) aufrufen.
         return domainObj;
@@ -72,11 +75,11 @@ public class GrundstueckseigentuemerEntity {
         this.name = name;
     }
 
-    public String getFirmenadresse() {
-        return firmenadresse;
+    public AdresseEntity getAdresse() {
+        return adresse;
     }
 
-    public void setFirmenadresse(String firmenadresse) {
-        this.firmenadresse = firmenadresse;
+    public void setAdresse(AdresseEntity adresse) {
+        this.adresse = adresse;
     }
 }

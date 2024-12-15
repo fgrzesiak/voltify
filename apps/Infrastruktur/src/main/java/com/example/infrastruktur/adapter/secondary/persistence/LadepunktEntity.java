@@ -1,7 +1,10 @@
 package com.example.infrastruktur.adapter.secondary.persistence;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Embedded;
 
+import com.example.infrastruktur.application.domain.Adresse;
+import com.example.infrastruktur.application.domain.EigentuemerId;
 import com.example.infrastruktur.application.domain.Ladepunkt;
 import com.example.infrastruktur.application.domain.LadepunktId;
 
@@ -9,21 +12,23 @@ public class LadepunktEntity {
 
     @Id
     private Integer ladepunktId;
-
-    private String standort;
+    private Integer eigentuemerId;
     private Double ladeleistungKW;
     private String anschlussart;
     private String verfuegbarkeit;
     private Double gesamtleistungKWH;
+    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
+    private AdresseEntity adresse;
 
     public LadepunktEntity() {
         // Leerer Konstruktor für Reflection (Spring Data)
     }
 
-    public LadepunktEntity(Integer ladepunktId, String standort, Double ladeleistungKW,
+    public LadepunktEntity(Integer ladepunktId, Integer eigentuemerId, Adresse adresse, Double ladeleistungKW,
             String anschlussart, String verfuegbarkeit, Double gesamtleistungKWH) {
         this.ladepunktId = ladepunktId;
-        this.standort = standort;
+        this.eigentuemerId = eigentuemerId;
+        this.adresse = new AdresseEntity(adresse);
         this.ladeleistungKW = ladeleistungKW;
         this.anschlussart = anschlussart;
         this.verfuegbarkeit = verfuegbarkeit;
@@ -36,7 +41,8 @@ public class LadepunktEntity {
      */
     public LadepunktEntity(Ladepunkt domain) {
         this.ladepunktId = domain.getLadepunktId().getId();
-        this.standort = domain.getStandort();
+        this.eigentuemerId = domain.getEigentuemerId().getId();
+        this.adresse = new AdresseEntity(domain.getAdresse());
         this.ladeleistungKW = domain.getLadeleistungKW();
         this.anschlussart = domain.getAnschlussart();
         this.verfuegbarkeit = domain.getVerfuegbarkeit();
@@ -49,7 +55,8 @@ public class LadepunktEntity {
     public Ladepunkt toDomain() {
         return new Ladepunkt(
                 new LadepunktId(this.ladepunktId),
-                this.standort,
+                new EigentuemerId(this.eigentuemerId),
+                this.adresse.toDomain(),
                 this.ladeleistungKW,
                 this.anschlussart,
                 this.verfuegbarkeit,
@@ -65,12 +72,20 @@ public class LadepunktEntity {
         this.ladepunktId = ladepunktId;
     }
 
-    public String getStandort() {
-        return standort;
+    public Integer getEigentuemerId() {
+        return eigentuemerId;
     }
 
-    public void setStandort(String standort) {
-        this.standort = standort;
+    public void setEigentuemerId(Integer eigentuemerId) {
+        this.eigentuemerId = eigentuemerId;
+    }
+
+    public AdresseEntity getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(AdresseEntity adresse) {
+        this.adresse = adresse;
     }
 
     public Double getLadeleistungKW() {

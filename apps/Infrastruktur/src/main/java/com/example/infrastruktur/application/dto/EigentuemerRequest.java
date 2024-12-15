@@ -9,16 +9,16 @@ import java.util.List;
 public class EigentuemerRequest {
 
     private String name;
-    private String firmenadresse;
+    private AdresseDto adresse;
     private List<AnsprechpartnerDto> ansprechpartner;
 
     public EigentuemerRequest() {
         this.ansprechpartner = new ArrayList<>();
     }
 
-    public EigentuemerRequest(String name, String firmenadresse, List<AnsprechpartnerDto> ansprechpartner) {
+    public EigentuemerRequest(String name, AdresseDto adresse, List<AnsprechpartnerDto> ansprechpartner) {
         this.name = name;
-        this.firmenadresse = firmenadresse;
+        this.adresse = adresse;
         this.ansprechpartner = ansprechpartner;
     }
 
@@ -30,12 +30,12 @@ public class EigentuemerRequest {
         this.name = name;
     }
 
-    public String getFirmenadresse() {
-        return firmenadresse;
+    public AdresseDto getAdresse() {
+        return adresse;
     }
 
-    public void setFirmenadresse(String firmenadresse) {
-        this.firmenadresse = firmenadresse;
+    public void setAdresse(AdresseDto adresse) {
+        this.adresse = adresse;
     }
 
     public List<AnsprechpartnerDto> getAnsprechpartner() {

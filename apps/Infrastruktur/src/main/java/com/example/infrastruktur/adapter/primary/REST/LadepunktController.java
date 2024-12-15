@@ -25,6 +25,8 @@ public class LadepunktController {
      */
     @PostMapping
     public ResponseEntity<String> ladepunktAnlegen(@RequestBody LadepunktRequest ladepunktRequest) {
+        // print json
+        System.out.println(ladepunktRequest);
         Integer newId = service.ladepunktAnlegen(ladepunktRequest);
         return new ResponseEntity<>("Neuer Ladepunkt mit ID=" + newId + " angelegt.", HttpStatus.CREATED);
     }
@@ -34,10 +36,10 @@ public class LadepunktController {
      * Holt einen Ladepunkt anhand seiner ID.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<LadepunktResponse> ladepunktFinden(@PathVariable("id") Integer id) {
+    public ResponseEntity<Object> ladepunktFinden(@PathVariable("id") Integer id) {
         LadepunktResponse ladepunkt = service.ladepunktFinden(id);
         if (ladepunkt == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Ladepunkt nicht gefunden", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(ladepunkt, HttpStatus.OK);
     }

@@ -6,17 +6,17 @@ import java.util.Objects;
  * Repräsentiert einen Ansprechpartner (Value Object) mit Kontaktdaten.
  */
 public class Ansprechpartner {
-    
+
     private String name;
-    private String adresse;
     private String telefon;
     private String email;
+    private Adresse adresse;
 
     // Leerer Konstruktor, falls für Serialisierung (z.B. JSON) benötigt
-    public Ansprechpartner() {  
+    public Ansprechpartner() {
     }
 
-    public Ansprechpartner(String name, String adresse, String telefon, String email) {
+    public Ansprechpartner(String name, Adresse adresse, String telefon, String email) {
         this.name = name;
         this.adresse = adresse;
         this.telefon = telefon;
@@ -28,7 +28,7 @@ public class Ansprechpartner {
         return name;
     }
 
-    public String getAdresse() {
+    public Adresse getAdresse() {
         return adresse;
     }
 
@@ -44,7 +44,7 @@ public class Ansprechpartner {
         this.name = name;
     }
 
-    public void setAdresse(String adresse) {
+    public void setAdresse(Adresse adresse) {
         this.adresse = adresse;
     }
 
@@ -59,13 +59,15 @@ public class Ansprechpartner {
     // equals / hashCode (typisch für Value Objects)
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Ansprechpartner)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Ansprechpartner))
+            return false;
         Ansprechpartner that = (Ansprechpartner) o;
         return Objects.equals(name, that.name) &&
-               Objects.equals(adresse, that.adresse) &&
-               Objects.equals(telefon, that.telefon) &&
-               Objects.equals(email, that.email);
+                Objects.equals(adresse, that.adresse) &&
+                Objects.equals(telefon, that.telefon) &&
+                Objects.equals(email, that.email);
     }
 
     @Override

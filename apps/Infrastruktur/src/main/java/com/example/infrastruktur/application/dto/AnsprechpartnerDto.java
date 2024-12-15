@@ -2,14 +2,14 @@ package com.example.infrastruktur.application.dto;
 
 public class AnsprechpartnerDto {
     private String name;
-    private String adresse;
+    private AdresseDto adresse;
     private String telefon;
     private String email;
 
     public AnsprechpartnerDto() {
     }
 
-    public AnsprechpartnerDto(String name, String adresse, String telefon, String email) {
+    public AnsprechpartnerDto(String name, AdresseDto adresse, String telefon, String email) {
         this.name = name;
         this.adresse = adresse;
         this.telefon = telefon;
@@ -24,11 +24,11 @@ public class AnsprechpartnerDto {
         this.name = name;
     }
 
-    public String getAdresse() {
+    public AdresseDto getAdresse() {
         return adresse;
     }
 
-    public void setAdresse(String adresse) {
+    public void setAdresse(AdresseDto adresse) {
         this.adresse = adresse;
     }
 
